@@ -3,13 +3,14 @@ package com.chenlb.mmseg4j.solr;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.ResourceLoader;
 import org.apache.lucene.analysis.util.ResourceLoaderAware;
 import org.apache.lucene.analysis.util.TokenizerFactory;
 import org.apache.lucene.util.AttributeSource.AttributeFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.chenlb.mmseg4j.ComplexSeg;
 import com.chenlb.mmseg4j.Dictionary;
@@ -20,10 +21,11 @@ import com.chenlb.mmseg4j.analysis.MMSegTokenizer;
 
 public class MMSegTokenizerFactory extends TokenizerFactory implements ResourceLoaderAware {
 
-	static final Logger log = Logger.getLogger(MMSegTokenizerFactory.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(MMSegTokenizerFactory.class);
 	/* 线程内共享 */
 	private ThreadLocal<MMSegTokenizer> tokenizerLocal = new ThreadLocal<MMSegTokenizer>();
-	private Dictionary dic = null;
+	// protected dic for test
+	protected Dictionary dic = null;
 
 	public MMSegTokenizerFactory(Map<String, String> args) {
 		super(args);
@@ -31,17 +33,17 @@ public class MMSegTokenizerFactory extends TokenizerFactory implements ResourceL
 
 	private Seg newSeg(Map<String, String> args) {
 		Seg seg = null;
-		log.info("create new Seg ...");
+		logger.info("create new Seg ...");
 		//default max-word
 		String mode = args.get("mode");
 		if("simple".equals(mode)) {
-			log.info("use simple mode");
+			logger.info("use simple mode");
 			seg = new SimpleSeg(dic);
 		} else if("complex".equals(mode)) {
-			log.info("use complex mode");
+			logger.info("use complex mode");
 			seg = new ComplexSeg(dic);
 		} else {
-			log.info("use max-word mode");
+			logger.info("use max-word mode");
 			seg = new MaxWordSeg(dic);
 		}
 		return seg;
@@ -57,7 +59,7 @@ public class MMSegTokenizerFactory extends TokenizerFactory implements ResourceL
 				tokenizer.setReader(input);
 			} catch (IOException e) {
 				tokenizer = newTokenizer(input);
-				log.info("MMSegTokenizer.reset i/o error by:"+e.getMessage());
+				logger.info("MMSegTokenizer.setReader i/o error by: e.getMessage()", e);
 			}
 		}
 
@@ -76,7 +78,7 @@ public class MMSegTokenizerFactory extends TokenizerFactory implements ResourceL
 
 		dic = Utils.getDict(dicPath, loader);
 
-		log.info("dic load... in="+dic.getDicPath().toURI());
+		logger.info("dic load... in={}", dic.getDicPath().toURI());
 	}
 
 }

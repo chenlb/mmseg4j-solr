@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- The Solr schema file. This file should be named "schema.xml" and
+     should be located where the classloader for the Solr webapp can find it.
+
+     This schema is used for testing, and as such has everything and the
+     kitchen sink thrown in. See example/solr/conf/schema.xml for a
+     more concise example.
+
+     $Id: schema.xml 382610 2006-03-03 01:43:03Z yonik $
+     $Source: /cvs/main/searching/solr-configs/test/WEB-INF/classes/schema.xml,v $
+     $Name:  $
+  -->
+
+<schema name="test" version="1.0">
+  <types>
+
+    <!-- field type definitions... note that the "name" attribute is
+         just a label to be used by field definitions.  The "class"
+         attribute and any other attributes determine the real type and
+         behavior of the fieldtype.
+      -->
+
+    <!-- numeric field types that store and index the text
+         value verbatim (and hence don't sort correctly or support range queries.)
+         These are provided more for backward compatability, allowing one
+         to create a schema that matches an existing lucene index.
+    -->
+    <fieldType name="pint" class="solr.IntField"/>
+    <fieldType name="plong" class="solr.LongField"/>
+    <fieldtype name="pfloat" class="solr.FloatField"/>
+    <fieldType name="pdouble" class="solr.DoubleField"/>
+
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="byte" class="solr.ByteField" omitNorms="true" positionIncrementGap="0"/>
+    <fieldType name="short" class="solr.ShortField" omitNorms="true" positionIncrementGap="0"/>
+
+    <fieldtype name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+    <fieldtype name="string" class="solr.StrField" sortMissingLast="true"/>
+
+    <!-- format for date is 1995-12-31T23:59:59.999Z and only the fractional
+         seconds part (.999) is optional.
+      -->
+    <fieldtype name="date" class="solr.TrieDateField" precisionStep="0"/>
+    <fieldtype name="tdate" class="solr.TrieDateField" precisionStep="6"/>
+    <fieldtype name="pdate" class="solr.DateField" sortMissingLast="true"/>
+
+
+    <!-- solr.TextField allows the specification of custom
+         text analyzers specified as a tokenizer and a list
+         of token filters.
+      -->
+    <fieldtype name="text" class="solr.TextField">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.StopFilterFactory"/>
+        <filter class="solr.PorterStemFilterFactory"/>
+      </analyzer>
+    </fieldtype>
+    
+<fieldtype name="textComplex" class="solr.TextField" positionIncrementGap="100">
+	<analyzer>
+		<tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="complex"/>
+	</analyzer>
+</fieldtype>
+<fieldtype name="textMaxWord" class="solr.TextField" positionIncrementGap="100">
+	<analyzer>
+		<tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="max-word" />
+	</analyzer>
+</fieldtype>
+<fieldtype name="textSimple" class="solr.TextField" positionIncrementGap="100">
+	<analyzer>
+		<tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="simple" dicPath="my-ext-dic" />
+	</analyzer>
+</fieldtype>
+</types>
+
+
+ <fields>
+   <field name="id" type="int" indexed="true" stored="true" multiValued="false" required="true"/>
+   <field name="name" type="text" indexed="true" stored="true"/>
+   <field name="text" type="text" indexed="true" stored="false"/>
+   
+   <field name="textComplex" type="textComplex" indexed="true" stored="false"/>
+   <field name="textMaxWord" type="textMaxWord" indexed="true" stored="false"/>
+   <field name="textSimple"  type="textSimple"  indexed="true" stored="false"/>
+   
+   <field name="subject" type="text" indexed="true" stored="true"/>
+   <field name="title" type="text" indexed="true" stored="true"/>
+   <field name="weight" type="float" indexed="true" stored="true" multiValued="false"/>
+   <field name="bday" type="date" indexed="true" stored="true" multiValued="false"/>
+
+   <field name="cat" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="price"  type="float" indexed="true" stored="true"/>
+   <field name="inStock" type="boolean" indexed="true" stored="true" />
+   
+   <field name="my_int" type="int" indexed="true" stored="true" multiValued="false"/>
+   <field name="my_long" type="long" indexed="true" stored="true" multiValued="false"/>
+   <field name="my_double" type="double" indexed="true" stored="true" multiValued="false"/>
+
+   <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+
+   <field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
+
+   <!-- ignored becuase not stored or indexed -->
+   <dynamicField name="*_ignored" type="text" indexed="false" stored="false"/>
+
+ </fields>
+
+ <defaultSearchField>text</defaultSearchField>
+ <uniqueKey>id</uniqueKey>
+
+  <!-- copyField commands copy one field to another at the time a document
+        is added to the index.  It's used either to index the same field different
+        ways, or to add multiple fields to the same field for easier/faster searching.
+   -->
+   <!--copyField source="title" dest="title_stemmed"/-->
+
+ <!-- example of a custom similarity -->
+<!--  <similarity class="solr.CustomSimilarityFactory">
+   <str name="echo">I am your default sim</str>
+ </similarity> -->
+</schema>
