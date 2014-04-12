@@ -46,7 +46,7 @@
   	<dependency>
   		<groupId>org.apache.solr</groupId>
   		<artifactId>solr-core</artifactId>
-  		<version>4.3.0</version>
+  		<version>${solr.version}</version>
   	</dependency>
 	<dependency>
   		<groupId>org.slf4j</groupId>
@@ -74,7 +74,7 @@
   	<dependency>
   		<groupId>org.apache.solr</groupId>
   		<artifactId>solr-test-framework</artifactId>
-  		<version>4.3.0</version>
+  		<version>${solr.version}</version>
   		<scope>test</scope>
   	</dependency>
 	<dependency>
@@ -121,6 +121,6 @@
   </build>
   <version>2.0.1-SNAPSHOT</version>
   <properties>
-  	<solr.version>4.3.0</solr.version>
+  	<solr.version>4.7.1</solr.version>
   </properties>
 </project>

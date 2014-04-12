@@ -34,7 +34,7 @@ public class MMSegTokenizerFactoryTest extends AbstractSolrTestCase {
 	}
 
 	private Dictionary getDictionaryByFieldType(String fieldTypeName) {
-		FieldType ft = h.getCore().getSchema().getFieldTypeByName(fieldTypeName);
+		FieldType ft = h.getCore().getLatestSchema().getFieldTypeByName(fieldTypeName);
 		Analyzer a = ft.getAnalyzer();
 		Assert.assertEquals(a.getClass(), TokenizerChain.class);
 		
