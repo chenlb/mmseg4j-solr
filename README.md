@@ -1,5 +1,4 @@
-mmseg4j-solr
-============
+## mmseg4j-solr
 
 mmseg4j for lucene or solr
 
@@ -27,6 +26,10 @@ tokenizer 的参数：
  * mode 参数 － 分词模式。
  
 mmseg4j-solr-2.0.0.jar 兼容 lucene/solr [4.3.0, 4.7.1]。
+
+## download
+
+[mmseg4j-solr](http://pan.baidu.com/s/1dD7qMFf)
 
 ## wiki
 
