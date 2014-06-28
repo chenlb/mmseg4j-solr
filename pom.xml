@@ -121,6 +121,6 @@
   </build>
   <version>2.1.1-SNAPSHOT</version>
   <properties>
-  	<solr.version>4.8.0</solr.version>
+  	<solr.version>4.9.0</solr.version>
   </properties>
 </project>
