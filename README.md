@@ -24,8 +24,12 @@ mmseg4j for lucene or solr
 tokenizer 的参数：
  * dicPath 参数 － 设置自定义的扩展词库，支持相对路径(相对于 solr_home).
  * mode 参数 － 分词模式。
- 
-mmseg4j-solr-2.0.0.jar 兼容 lucene/solr [4.3.0, 4.7.1]。
+
+版本
+
+* mmseg4j-solr-2.0.0.jar 要求 lucene/solr >= 4.3.0。在 lucene/solr [4.3.0, 4.7.1] 测试过兼容可用。
+* mmseg4j-solr-2.1.0.jar 要求 lucene/solr 4.8.x
+* mmseg4j-solr-2.2.0.jar 要求 lucene/solr [4.9, 4.10.x]
 
 ## download
 
