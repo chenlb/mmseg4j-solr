@@ -1,9 +1,6 @@
 package com.chenlb.mmseg4j.analysis;
 
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Queue;
-
+import com.chenlb.mmseg4j.Word;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -11,7 +8,9 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
-import com.chenlb.mmseg4j.Word;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * 切分“字母和数”混在一起的过虑器。比如：mb991ch 切为 "mb 991 ch"
@@ -98,8 +97,7 @@ public class CutLetterDigitFilter extends TokenFilter {
 	}
 
 	private void addToken(Token oriToken, int termBufferOffset, int termBufferLength, byte type) {
-		Token token = new Token(oriToken.buffer(), termBufferOffset, termBufferLength,
-				oriToken.startOffset()+termBufferOffset, oriToken.startOffset()+termBufferOffset+termBufferLength);
+		Token token = TokenUtils.subToken(oriToken, termBufferOffset, termBufferLength);
 
 		if(type == Character.DECIMAL_DIGIT_NUMBER) {
 			token.setType(Word.TYPE_DIGIT);

@@ -1,9 +1,7 @@
 package com.chenlb.mmseg4j.solr;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Map;
-
+import com.chenlb.mmseg4j.*;
+import com.chenlb.mmseg4j.analysis.MMSegTokenizer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.ResourceLoader;
 import org.apache.lucene.analysis.util.ResourceLoaderAware;
@@ -12,12 +10,7 @@ import org.apache.lucene.util.AttributeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.chenlb.mmseg4j.ComplexSeg;
-import com.chenlb.mmseg4j.Dictionary;
-import com.chenlb.mmseg4j.MaxWordSeg;
-import com.chenlb.mmseg4j.Seg;
-import com.chenlb.mmseg4j.SimpleSeg;
-import com.chenlb.mmseg4j.analysis.MMSegTokenizer;
+import java.util.Map;
 
 public class MMSegTokenizerFactory extends TokenizerFactory implements ResourceLoaderAware {
 
@@ -50,24 +43,17 @@ public class MMSegTokenizerFactory extends TokenizerFactory implements ResourceL
 	}
 
 	@Override
-	public Tokenizer create(AttributeFactory factory, Reader input) {
+	public Tokenizer create(AttributeFactory factory) {
 		MMSegTokenizer tokenizer = tokenizerLocal.get();
 		if(tokenizer == null) {
-			tokenizer = newTokenizer(input);
-		} else {
-			try {
-				tokenizer.setReader(input);
-			} catch (IOException e) {
-				tokenizer = newTokenizer(input);
-				logger.info("MMSegTokenizer.setReader i/o error by: e.getMessage()", e);
-			}
+			tokenizer = newTokenizer();
 		}
 
 		return tokenizer;
 	}
 
-	private MMSegTokenizer newTokenizer(Reader input) {
-		MMSegTokenizer tokenizer = new MMSegTokenizer(newSeg(getOriginalArgs()), input);
+	private MMSegTokenizer newTokenizer() {
+		MMSegTokenizer tokenizer = new MMSegTokenizer(newSeg(getOriginalArgs()));
 		tokenizerLocal.set(tokenizer);
 		return tokenizer;
 	}

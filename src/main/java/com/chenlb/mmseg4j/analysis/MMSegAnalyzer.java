@@ -57,7 +57,7 @@ public class MMSegAnalyzer extends Analyzer {
 	}
 
 	@Override
-	protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-		return new TokenStreamComponents(new MMSegTokenizer(newSeg(), reader));
+	protected TokenStreamComponents createComponents(String fieldName) {
+		return new TokenStreamComponents(new MMSegTokenizer(newSeg()));
 	}
 }

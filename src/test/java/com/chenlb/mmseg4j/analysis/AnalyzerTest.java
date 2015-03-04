@@ -90,7 +90,7 @@ public class AnalyzerTest {
 		FileInputStream fis = new FileInputStream("src/test/resources/text-sentence.txt");
 		Dictionary.load(fis, new FileLoading() {
 
-			StandardAnalyzer sa = new StandardAnalyzer(Version.LUCENE_CURRENT);
+			StandardAnalyzer sa = new StandardAnalyzer();
 
 			@Override
 			public void row(String line, int n) {

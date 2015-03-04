@@ -2,6 +2,7 @@ package com.chenlb.mmseg4j.analysis;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -20,9 +21,11 @@ public class MMSegTokenizer extends Tokenizer {
 	private OffsetAttribute offsetAtt;
 	private TypeAttribute typeAtt;
 
-	public MMSegTokenizer(Seg seg, Reader input) {
-		super(input);
-		mmSeg = new MMSeg(input, seg);
+	private final Seg seg;
+
+	public MMSegTokenizer(Seg seg) {
+		super();
+		this.seg = seg;
 
 		termAtt = addAttribute(CharTermAttribute.class);
 		offsetAtt = addAttribute(OffsetAttribute.class);
@@ -34,7 +37,11 @@ public class MMSegTokenizer extends Tokenizer {
 		//lucene 4.0
 		//org.apache.lucene.analysis.Tokenizer.setReader(Reader)
 		//setReader 自动被调用, input 自动被设置。
-		mmSeg.reset(input);
+		if(mmSeg == null) {
+			mmSeg = new MMSeg(input, seg);
+		} else {
+			mmSeg.reset(input);
+		}
 	}
 
 /*//lucene 2.9 以下
@@ -72,7 +79,6 @@ public class MMSegTokenizer extends Tokenizer {
 			typeAtt.setType(word.getType());
 			return true;
 		} else {
-			end();
 			return false;
 		}
 	}
