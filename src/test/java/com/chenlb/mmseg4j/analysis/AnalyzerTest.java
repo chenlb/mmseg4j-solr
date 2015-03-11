@@ -11,6 +11,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.PackedTokenAttributeImpl;
 import org.apache.lucene.util.Version;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -138,7 +139,7 @@ public class AnalyzerTest {
 			System.out.println("("+termAtt.term()+","+offsetAtt.startOffset()+","+offsetAtt.endOffset()+",type="+typeAtt.type()+")");
 		}*/
 		ts.reset();
-		for(Token t= new Token(); (t=TokenUtils.nextToken(ts, t)) !=null;) {
+		for(PackedTokenAttributeImpl t= new PackedTokenAttributeImpl(); (t=TokenUtils.nextToken(ts, t)) !=null;) {
 			System.out.println(t);
 		}
 		ts.close();
@@ -150,7 +151,7 @@ public class AnalyzerTest {
 		try {
 			ts = analyzer.tokenStream("text", new StringReader(txt));
 			ts.reset();
-			for(Token t= new Token(); (t=TokenUtils.nextToken(ts, t)) !=null;) {
+			for(PackedTokenAttributeImpl t= new PackedTokenAttributeImpl(); (t=TokenUtils.nextToken(ts, t)) !=null;) {
 				words.add(t.toString());
 			}
 		} catch (IOException e) {

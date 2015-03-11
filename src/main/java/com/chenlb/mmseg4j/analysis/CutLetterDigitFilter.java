@@ -1,11 +1,11 @@
 package com.chenlb.mmseg4j.analysis;
 
 import com.chenlb.mmseg4j.Word;
-import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.tokenattributes.PackedTokenAttributeImpl;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
 import java.io.IOException;
@@ -19,46 +19,30 @@ import java.util.Queue;
  */
 public class CutLetterDigitFilter extends TokenFilter {
 
-	protected Queue<Token> tokenQueue = new LinkedList<Token>();
+	protected Queue<PackedTokenAttributeImpl> tokenQueue = new LinkedList<PackedTokenAttributeImpl>();
 
 	private CharTermAttribute termAtt;
     private OffsetAttribute offsetAtt;
     private TypeAttribute typeAtt;
-    private Token reusableToken;
+    private PackedTokenAttributeImpl reusableToken;
 
 	public CutLetterDigitFilter(TokenStream input) {
 		super(input);
 
-		reusableToken = new Token();
-		termAtt = (CharTermAttribute)addAttribute(CharTermAttribute.class);
-		offsetAtt = (OffsetAttribute)addAttribute(OffsetAttribute.class);
-		typeAtt = (TypeAttribute)addAttribute(TypeAttribute.class);
+		reusableToken = new PackedTokenAttributeImpl();
+		termAtt = addAttribute(CharTermAttribute.class);
+		offsetAtt = addAttribute(OffsetAttribute.class);
+		typeAtt = addAttribute(TypeAttribute.class);
 	}
 
-	//兼容 lucene 2.9
-	public Token next(Token reusableToken) throws IOException {
-		return nextToken(reusableToken);
-	}
-
-	private Token nextToken(Token reusableToken) throws IOException {
+	private PackedTokenAttributeImpl nextToken(PackedTokenAttributeImpl reusableToken) throws IOException {
 		assert reusableToken != null;
 
 		//先使用上次留下来的。
-		Token nextToken = tokenQueue.poll();
+		PackedTokenAttributeImpl nextToken = tokenQueue.poll();
 		if(nextToken != null) {
 			return nextToken;
 		}
-
-		/*//在 TokenUtils.nextToken 已经调用了 inc
-		if(!input.incrementToken()) {
-			return null;
-		}*/
-
-		/*TermAttribute termAtt = (TermAttribute)input.getAttribute(TermAttribute.class);
-		OffsetAttribute offsetAtt = (OffsetAttribute)input.getAttribute(OffsetAttribute.class);
-		TypeAttribute typeAtt = (TypeAttribute)input.getAttribute(TypeAttribute.class);
-
-		nextToken = reusableToken.reinit(termAtt.termBuffer(), 0, termAtt.termLength(), offsetAtt.startOffset(), offsetAtt.endOffset(), typeAtt.type());*/
 
 		nextToken = TokenUtils.nextToken(input, reusableToken);
 
@@ -96,8 +80,8 @@ public class CutLetterDigitFilter extends TokenFilter {
 		return nextToken;
 	}
 
-	private void addToken(Token oriToken, int termBufferOffset, int termBufferLength, byte type) {
-		Token token = TokenUtils.subToken(oriToken, termBufferOffset, termBufferLength);
+	private void addToken(PackedTokenAttributeImpl oriToken, int termBufferOffset, int termBufferLength, byte type) {
+		PackedTokenAttributeImpl token = TokenUtils.subToken(oriToken, termBufferOffset, termBufferLength);
 
 		if(type == Character.DECIMAL_DIGIT_NUMBER) {
 			token.setType(Word.TYPE_DIGIT);
@@ -120,14 +104,13 @@ public class CutLetterDigitFilter extends TokenFilter {
 
 	public final boolean incrementToken() throws IOException {
 		clearAttributes();
-		Token token = nextToken(reusableToken);
+		PackedTokenAttributeImpl token = nextToken(reusableToken);
 		if(token != null) {
 			termAtt.copyBuffer(token.buffer(), 0, token.length());
 			offsetAtt.setOffset(token.startOffset(), token.endOffset());
 			typeAtt.setType(token.type());
 			return true;
 		} else {
-			end();
 			return false;
 		}
 	}
