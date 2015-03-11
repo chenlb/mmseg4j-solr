@@ -30,6 +30,7 @@ tokenizer 的参数：
 * mmseg4j-solr-2.0.0.jar 要求 lucene/solr >= 4.3.0。在 lucene/solr [4.3.0, 4.7.1] 测试过兼容可用。
 * mmseg4j-solr-2.1.0.jar 要求 lucene/solr 4.8.x
 * mmseg4j-solr-2.2.0.jar 要求 lucene/solr [4.9, 4.10.x]
+* mmseg4j-solr-2.3.0.jar 要求 lucene/solr [5.0, ]
 
 ## download
 
