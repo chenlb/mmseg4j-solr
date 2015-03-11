@@ -20,8 +20,8 @@ public class CutLetterDigitFilterTest {
 		List<String> words = AnalyzerTest.toWords(myTxt, new MMSegAnalyzer("") {
 
 			@Override
-			protected TokenStreamComponents createComponents(String fieldName, Reader reader) {
-				Tokenizer t = new MMSegTokenizer(newSeg(), reader);
+			protected TokenStreamComponents createComponents(String fieldName) {
+				Tokenizer t = new MMSegTokenizer(newSeg());
 				return new TokenStreamComponents(t, new CutLetterDigitFilter(t));
 			}
 

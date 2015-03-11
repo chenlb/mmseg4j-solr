@@ -28,7 +28,7 @@
      $Name:  $
   -->
 
-<schema name="test" version="1.0">
+<schema name="test" version="1.5">
   <types>
 
     <!-- field type definitions... note that the "name" attribute is
@@ -42,19 +42,13 @@
          These are provided more for backward compatability, allowing one
          to create a schema that matches an existing lucene index.
     -->
-    <fieldType name="pint" class="solr.IntField"/>
-    <fieldType name="plong" class="solr.LongField"/>
-    <fieldtype name="pfloat" class="solr.FloatField"/>
-    <fieldType name="pdouble" class="solr.DoubleField"/>
 
     <fieldType name="int" class="solr.TrieIntField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
     <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
     <fieldType name="long" class="solr.TrieLongField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
     <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
-    <fieldType name="byte" class="solr.ByteField" omitNorms="true" positionIncrementGap="0"/>
-    <fieldType name="short" class="solr.ShortField" omitNorms="true" positionIncrementGap="0"/>
 
-    <fieldtype name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+      <fieldtype name="boolean" class="solr.BoolField" sortMissingLast="true"/>
     <fieldtype name="string" class="solr.StrField" sortMissingLast="true"/>
 
     <!-- format for date is 1995-12-31T23:59:59.999Z and only the fractional
@@ -62,7 +56,6 @@
       -->
     <fieldtype name="date" class="solr.TrieDateField" precisionStep="0"/>
     <fieldtype name="tdate" class="solr.TrieDateField" precisionStep="6"/>
-    <fieldtype name="pdate" class="solr.DateField" sortMissingLast="true"/>
 
 
     <!-- solr.TextField allows the specification of custom

@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
-import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
+import org.apache.lucene.analysis.tokenattributes.*;
 
 /**
  * lucene 3.0 从 TokenStream 得到 Token 比较麻烦。
@@ -21,7 +19,7 @@ public class TokenUtils {
 	 * @return null - if not next token or input is null.
 	 * @throws IOException
 	 */
-	public static Token nextToken(TokenStream input, Token reusableToken) throws IOException {
+	public static PackedTokenAttributeImpl nextToken(TokenStream input, PackedTokenAttributeImpl reusableToken) throws IOException {
 		if(input == null) {
 			return null;
 		}
@@ -34,7 +32,7 @@ public class TokenUtils {
 		TypeAttribute typeAtt = input.getAttribute(TypeAttribute.class);
 
 		if(reusableToken == null) {
-			reusableToken = new Token();
+			reusableToken = new PackedTokenAttributeImpl();
 		}
 
 		reusableToken.clear();
@@ -43,6 +41,7 @@ public class TokenUtils {
 			//reusableToken.setTermBuffer(termAtt.termBuffer(), 0, termAtt.termLength());
 			//lucene 3.1
 			reusableToken.copyBuffer(termAtt.buffer(), 0, termAtt.length());
+
 		}
 		if(offsetAtt != null) {
 			//lucene 3.1
@@ -57,5 +56,19 @@ public class TokenUtils {
 		}
 
 		return reusableToken;
+	}
+
+	public static PackedTokenAttributeImpl subToken(PackedTokenAttributeImpl oriToken, int termBufferOffset, int termBufferLength) {
+		//CharTermAttributeImpl termImpl = new CharTermAttributeImpl();
+		//termImpl.copyBuffer(oriToken.buffer(), termBufferOffset, termBufferLength);
+
+		//new Token(oriToken.buffer(), termBufferOffset, termBufferLength,
+		//		oriToken.startOffset()+termBufferOffset, oriToken.startOffset()+termBufferOffset+termBufferLength);
+		//Token token = new Token(termImpl, oriToken.startOffset()+termBufferOffset, oriToken.startOffset()+termBufferOffset+termBufferLength);
+		PackedTokenAttributeImpl token = new PackedTokenAttributeImpl();
+		token.copyBuffer(oriToken.buffer(), termBufferOffset, termBufferLength);
+		token.setOffset(oriToken.startOffset()+termBufferOffset, oriToken.startOffset()+termBufferOffset+termBufferLength);
+		token.setType(oriToken.type());
+		return token;
 	}
 }
