@@ -32,6 +32,16 @@ tokenizer 的参数：
 * mmseg4j-solr-2.2.0.jar 要求 lucene/solr [4.9, 4.10.x]
 * mmseg4j-solr-2.3.0.jar 要求 lucene/solr [5.0, ]
 
+## maven
+
+```xml
+<dependency>
+    <groupId>com.chenlb.mmseg4j</groupId>
+    <artifactId>mmseg4j-solr</artifactId>
+    <version>2.3.0</version>
+</dependency>
+```
+
 ## download
 
 [mmseg4j-solr](http://pan.baidu.com/s/1dD7qMFf)
