@@ -60,7 +60,6 @@
     <maxBufferedDocs>10</maxBufferedDocs>
     <mergePolicy class="org.apache.lucene.index.LogDocMergePolicy"/>
     <lockType>native</lockType>
-    <unlockOnStartup>true</unlockOnStartup>
   </indexConfig>
 
   <updateHandler class="solr.DirectUpdateHandler2">
@@ -237,7 +236,6 @@
     </lst>
   </requestHandler>
 
-  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
 
   <!-- test query parameter defaults -->
   <requestHandler name="defaults" class="solr.StandardRequestHandler">
