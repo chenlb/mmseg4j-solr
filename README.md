@@ -27,10 +27,11 @@ tokenizer 的参数：
 
 版本
 
-* mmseg4j-solr-2.0.0.jar 要求 lucene/solr >= 4.3.0。在 lucene/solr [4.3.0, 4.7.1] 测试过兼容可用。
-* mmseg4j-solr-2.1.0.jar 要求 lucene/solr 4.8.x
-* mmseg4j-solr-2.2.0.jar 要求 lucene/solr [4.9, 4.10.x]
-* mmseg4j-solr-2.3.0.jar 要求 lucene/solr [5.0, ]
+* 2.0.0 - 要求 lucene/solr >= 4.3.0。在 lucene/solr [4.3.0, 4.7.1] 测试过兼容可用。
+* 2.1.0 - 要求 lucene/solr 4.8.x
+* 2.2.0 - 要求 lucene/solr [4.9, 4.10.x]
+* 2.3.0 - 要求 lucene/solr [5.0, ]
+* 2.4.0 - 要求 lucene/solr [6.0.0, ], 测试到 6.3.0 通过。
 
 ## maven
 
@@ -38,7 +39,7 @@ tokenizer 的参数：
 <dependency>
     <groupId>com.chenlb.mmseg4j</groupId>
     <artifactId>mmseg4j-solr</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 

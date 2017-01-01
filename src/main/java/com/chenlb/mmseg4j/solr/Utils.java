@@ -15,7 +15,7 @@ public class Utils {
 			File f = new File(dicPath);
 			if(!f.isAbsolute() && loader instanceof SolrResourceLoader) {	//相对目录
 				SolrResourceLoader srl = (SolrResourceLoader) loader;
-				dicPath = srl.getInstanceDir()+dicPath;
+				dicPath = srl.getInstancePath().resolve(dicPath).toString();
 				f = new File(dicPath);
 			}
 
